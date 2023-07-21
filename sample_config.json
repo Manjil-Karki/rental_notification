@@ -1,0 +1,15 @@
+{
+"db_config": {
+    "host": "your_mysql_host",
+    "user": "your_mysql_username",
+    "password": "your_mysql_password",
+    "database": "sakila"
+},
+"smtp_config":{
+    "smtp_server": "your_smtp_server",
+    "smtp_port": 587,
+    "smtp_username": "your_smtp_username",
+    "smtp_password":"your_smtp_password",
+    "sender_email": "your_sender_email@example.com",
+    "receiver_email": "your_receiver_email@example.com"
+}}
