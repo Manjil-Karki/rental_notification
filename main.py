@@ -5,6 +5,8 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from datetime import datetime, timedelta
 
+logs = []
+
 def read_config(path):
     with open(path, 'r') as f:
         config = json.load(f)
@@ -48,7 +50,10 @@ def fetch_new_rentals(db_config):
         return rentals
 
     except Exception as e:
-        print("Error fetching new rentals:", e)
+        log = f"Error fetching new rentals: {e}"
+        log = datetime.now().strftime("%Y-%m-%d %H:%M:%S  ") + log
+        logs.append(log)
+        print(log)
         return []
 
 def format_rentals(rentals):
@@ -81,15 +86,30 @@ def send_email(content, smtp_config):
         server.login(smtp_config["smtp_username"], smtp_config["smtp_password"])
         server.sendmail(smtp_config["sender_email"], smtp_config["receiver_email"], message.as_string())
 
+    return smtp_config["sender_email"], smtp_config["receiver_email"]
+
 if __name__ == "__main__":
 
-    db_config, smtp_config = read_config("config.json")
+    db_config, smtp_config = read_config("/home/manjil/de-sakila/config.json")
+
+    
 
 
     new_rentals = fetch_new_rentals(db_config)
     if new_rentals:
         formatted_rentals = format_rentals(new_rentals)
-        send_email(formatted_rentals, smtp_config)
-        print("Email sent successfully.")
+        sender, receiver = send_email(formatted_rentals, smtp_config)
+        log = f"Email sent successfully from {sender} to {receiver}."
+        log = datetime.now().strftime("%Y-%m-%d %H:%M:%S  ") + log
+        logs.append(log)
+        print(log)
+        
     else:
-        print("No new rentals in the last hour.")
+        log = f"No new rentals in the last hour."
+        log = datetime.now().strftime("%Y-%m-%d %H:%M:%S  ") + log
+        logs.append(log)
+        print(log)
+
+    with open("/home/manjil/de-sakila/logs.txt", 'a') as f:
+        for log in logs:
+            f.write(log + "\n")
