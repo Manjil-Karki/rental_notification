@@ -29,6 +29,7 @@ Final verification of scheduling and email is done as:
 <ul>
 <li> Download sakila db from mysql documentation </li>
 <li> Import sakiladb to MySQL </li>
+<li> The rental dates, dates back to 2005, 2006 run modify_rental_date script to update rental_date column to current relevent dates </li>
 <li> Setup the python environment </li>
 <li> Create a dedicated user for this operation</li>
 <li> Get password for google SMTP </li>
